@@ -55,6 +55,7 @@ struct RoomHeader: View {
                 }
                 .buttonStyle(.plain)
                 .disabled(!room.isJoined && feed.isBusy(room.room))
+                .accessibilityIdentifier("connect-toggle")
             }
 
             HStack(alignment: .top, spacing: 28) {

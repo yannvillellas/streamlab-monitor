@@ -39,6 +39,17 @@
                ReferencedContainer = "container:StreamLabMonitor.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "AB12CD34EF56000000000046"
+               BuildableName = "StreamLabMonitorUITests.xctest"
+               BlueprintName = "StreamLabMonitorUITests"
+               ReferencedContainer = "container:StreamLabMonitor.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
