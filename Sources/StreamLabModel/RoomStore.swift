@@ -95,6 +95,7 @@ public struct RoomRecord: Identifiable, Equatable, Sendable {
 
     public mutating func beginJoin(at date: Date) {
         state = .waiting
+        localPeerId = nil
         peer = nil
         append(text: "connecting", direction: .local, at: date)
     }
@@ -315,6 +316,10 @@ extension RoomStore {
             at: t.addingTimeInterval(2.3)
         )
         store.replace(wired)
+
+        var waiting = store["studio-b"]!
+        waiting.beginJoin(at: t.addingTimeInterval(0.1))
+        store.replace(waiting)
 
         var lobby = store["lobby"]!
         lobby.beginJoin(at: t)

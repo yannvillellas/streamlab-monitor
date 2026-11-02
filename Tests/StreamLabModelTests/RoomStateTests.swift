@@ -100,6 +100,26 @@ final class RoomStateTransitionTests: XCTestCase {
         XCTAssertEqual(room.peer?.id, viewerId)
     }
 
+    func testBeginJoinClearsPreviousMembership() {
+        var room = record()
+        room.beginJoin(at: t0)
+        room.apply(.joined(peerId: senderId, room: "studio-a", role: .sender, peer: nil), at: t0)
+        XCTAssertTrue(room.isJoined)
+
+        room.apply(.error(code: "no-peer", message: "The other peer is no longer connected."), at: t0)
+        XCTAssertFalse(room.isJoined)
+        XCTAssertEqual(
+            room.localPeerId,
+            senderId,
+            "a no-peer error means we are still in the room, so membership is kept"
+        )
+
+        room.beginJoin(at: t0)
+        XCTAssertNil(room.localPeerId, "a new join invalidates the previous membership")
+        XCTAssertFalse(room.isJoined)
+        XCTAssertEqual(room.state, .waiting)
+    }
+
     func testEndSessionReturnsToUnknown() {
         var room = record()
         room.beginJoin(at: t0)
