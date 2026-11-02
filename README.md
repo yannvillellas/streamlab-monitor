@@ -70,13 +70,14 @@ same view files serve iOS and macOS.
 
 Against the real server, on Linux: decoding of every message including `peer: null`, the empty
 to occupied to empty transitions, `role-taken`, and the `joined` handshake over a real
-WebSocket. `swift test` runs 40 tests; the four integration ones start the server on an
+WebSocket. `swift test` runs 41 tests; the four integration ones start the server on an
 ephemeral port and are skipped when the stream-lab checkout is absent.
 
-The app target and its workflow are written but have never run. There is no Xcode here, so no
-file under `App/` has been compiled: `.github/workflows/ci.yml` builds iOS and macOS, runs the
-hosted test on a simulator picked at runtime, and renders the snapshots as an artefact. The
-first push will tell what breaks.
+The app target is built by a macOS runner, not here: CI compiles it for iOS and macOS, runs the
+tests on an iPhone simulator picked at runtime, and renders the two screens as PNG artefacts
+(`ui-snapshots` from macOS, `ui-snapshots-ios` from the simulator). Nothing has been run on a
+device: there is no Xcode and no Mac on this machine, so the app has only ever been compiled
+and rendered, never used.
 
 Not in scope: media, WebRTC, camera, authentication, persistence, more than two peers per room.
 Only loopback has been exercised — `SignallingEndpoint(host:port:)` takes any host, but nothing
@@ -84,5 +85,5 @@ has run against a LAN address or over TLS.
 
 ## Status
 
-The model and the transport are done and tested. The app screens and the CI exist as code and
-have not been compiled once, and nothing has been run on a device.
+The model and the transport are done and tested on Linux. The app compiles for iOS and macOS in
+CI and renders its two screens, and it has never run on a device or been driven by a human.
