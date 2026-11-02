@@ -1,0 +1,571 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 60;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		AB12CD34EF56000000000031 /* StreamLabMonitorApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000021 /* StreamLabMonitorApp.swift */; };
+		AB12CD34EF56000000000032 /* RoomFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000022 /* RoomFeed.swift */; };
+		AB12CD34EF56000000000033 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000023 /* ContentView.swift */; };
+		AB12CD34EF56000000000034 /* RoomListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000024 /* RoomListView.swift */; };
+		AB12CD34EF56000000000035 /* RoomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000025 /* RoomDetailView.swift */; };
+		AB12CD34EF56000000000036 /* EventFeedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000026 /* EventFeedView.swift */; };
+		AB12CD34EF56000000000037 /* RoomStateBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000027 /* RoomStateBadge.swift */; };
+		AB12CD34EF56000000000038 /* AddRoomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000028 /* AddRoomView.swift */; };
+		AB12CD34EF56000000000039 /* StreamLabModel in Frameworks */ = {isa = PBXBuildFile; productRef = AB12CD34EF5600000000001C /* StreamLabModel */; };
+		AB12CD34EF5600000000003A /* StreamLabSignalling in Frameworks */ = {isa = PBXBuildFile; productRef = AB12CD34EF5600000000001D /* StreamLabSignalling */; };
+		AB12CD34EF5600000000003B /* SnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000029 /* SnapshotTests.swift */; };
+		AB12CD34EF5600000000003C /* StreamLabModel in Frameworks */ = {isa = PBXBuildFile; productRef = AB12CD34EF5600000000001E /* StreamLabModel */; };
+		AB12CD34EF5600000000003D /* StreamLabSignalling in Frameworks */ = {isa = PBXBuildFile; productRef = AB12CD34EF5600000000001F /* StreamLabSignalling */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		AB12CD34EF5600000000001A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB12CD34EF56000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB12CD34EF56000000000006;
+			remoteInfo = StreamLabMonitorApp;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		AB12CD34EF56000000000008 /* StreamLabMonitorApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = StreamLabMonitorApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB12CD34EF56000000000009 /* StreamLabMonitorSnapshotTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamLabMonitorSnapshotTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		AB12CD34EF56000000000020 /* StreamLabMonitor.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = StreamLabMonitor.entitlements; sourceTree = "<group>"; };
+		AB12CD34EF56000000000021 /* StreamLabMonitorApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StreamLabMonitorApp.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000022 /* RoomFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomFeed.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000023 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000024 /* RoomListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomListView.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000025 /* RoomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomDetailView.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000026 /* EventFeedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EventFeedView.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000027 /* RoomStateBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomStateBadge.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000028 /* AddRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRoomView.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000029 /* SnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		AB12CD34EF56000000000014 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB12CD34EF56000000000039 /* StreamLabModel in Frameworks */,
+				AB12CD34EF5600000000003A /* StreamLabSignalling in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB12CD34EF56000000000017 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB12CD34EF5600000000003C /* StreamLabModel in Frameworks */,
+				AB12CD34EF5600000000003D /* StreamLabSignalling in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		AB12CD34EF56000000000002 = {
+			isa = PBXGroup;
+			children = (
+				AB12CD34EF56000000000003 /* StreamLabMonitorApp */,
+				AB12CD34EF56000000000004 /* StreamLabMonitorSnapshotTests */,
+				AB12CD34EF56000000000005 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		AB12CD34EF56000000000003 /* StreamLabMonitorApp */ = {
+			isa = PBXGroup;
+			children = (
+				AB12CD34EF56000000000021 /* StreamLabMonitorApp.swift */,
+				AB12CD34EF56000000000022 /* RoomFeed.swift */,
+				AB12CD34EF56000000000023 /* ContentView.swift */,
+				AB12CD34EF56000000000024 /* RoomListView.swift */,
+				AB12CD34EF56000000000025 /* RoomDetailView.swift */,
+				AB12CD34EF56000000000026 /* EventFeedView.swift */,
+				AB12CD34EF56000000000027 /* RoomStateBadge.swift */,
+				AB12CD34EF56000000000028 /* AddRoomView.swift */,
+				AB12CD34EF56000000000020 /* StreamLabMonitor.entitlements */,
+			);
+			path = StreamLabMonitorApp;
+			sourceTree = "<group>";
+		};
+		AB12CD34EF56000000000004 /* StreamLabMonitorSnapshotTests */ = {
+			isa = PBXGroup;
+			children = (
+				AB12CD34EF56000000000029 /* SnapshotTests.swift */,
+			);
+			path = StreamLabMonitorSnapshotTests;
+			sourceTree = "<group>";
+		};
+		AB12CD34EF56000000000005 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				AB12CD34EF56000000000008 /* StreamLabMonitorApp.app */,
+				AB12CD34EF56000000000009 /* StreamLabMonitorSnapshotTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		AB12CD34EF56000000000006 /* StreamLabMonitorApp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB12CD34EF5600000000000B /* Build configuration list for PBXNativeTarget "StreamLabMonitorApp" */;
+			buildPhases = (
+				AB12CD34EF56000000000013 /* Sources */,
+				AB12CD34EF56000000000014 /* Frameworks */,
+				AB12CD34EF56000000000015 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = StreamLabMonitorApp;
+			packageProductDependencies = (
+				AB12CD34EF5600000000001C /* StreamLabModel */,
+				AB12CD34EF5600000000001D /* StreamLabSignalling */,
+			);
+			productName = StreamLabMonitorApp;
+			productReference = AB12CD34EF56000000000008 /* StreamLabMonitorApp.app */;
+			productType = "com.apple.product-type.application";
+		};
+		AB12CD34EF56000000000007 /* StreamLabMonitorSnapshotTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB12CD34EF5600000000000C /* Build configuration list for PBXNativeTarget "StreamLabMonitorSnapshotTests" */;
+			buildPhases = (
+				AB12CD34EF56000000000016 /* Sources */,
+				AB12CD34EF56000000000017 /* Frameworks */,
+				AB12CD34EF56000000000018 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AB12CD34EF56000000000019 /* PBXTargetDependency */,
+			);
+			name = StreamLabMonitorSnapshotTests;
+			packageProductDependencies = (
+				AB12CD34EF5600000000001E /* StreamLabModel */,
+				AB12CD34EF5600000000001F /* StreamLabSignalling */,
+			);
+			productName = StreamLabMonitorSnapshotTests;
+			productReference = AB12CD34EF56000000000009 /* StreamLabMonitorSnapshotTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AB12CD34EF56000000000001 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 1600;
+				TargetAttributes = {
+					AB12CD34EF56000000000006 = {
+						CreatedOnToolsVersion = 16.0;
+					};
+					AB12CD34EF56000000000007 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = AB12CD34EF56000000000006;
+					};
+				};
+			};
+			buildConfigurationList = AB12CD34EF5600000000000A /* Build configuration list for PBXProject "StreamLabMonitor" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = AB12CD34EF56000000000002;
+			packageReferences = (
+				AB12CD34EF5600000000001B /* XCLocalSwiftPackageReference ".." */,
+			);
+			productRefGroup = AB12CD34EF56000000000005 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				AB12CD34EF56000000000006 /* StreamLabMonitorApp */,
+				AB12CD34EF56000000000007 /* StreamLabMonitorSnapshotTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		AB12CD34EF56000000000015 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB12CD34EF56000000000018 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		AB12CD34EF56000000000013 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB12CD34EF56000000000031 /* StreamLabMonitorApp.swift in Sources */,
+				AB12CD34EF56000000000032 /* RoomFeed.swift in Sources */,
+				AB12CD34EF56000000000033 /* ContentView.swift in Sources */,
+				AB12CD34EF56000000000034 /* RoomListView.swift in Sources */,
+				AB12CD34EF56000000000035 /* RoomDetailView.swift in Sources */,
+				AB12CD34EF56000000000036 /* EventFeedView.swift in Sources */,
+				AB12CD34EF56000000000037 /* RoomStateBadge.swift in Sources */,
+				AB12CD34EF56000000000038 /* AddRoomView.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB12CD34EF56000000000016 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB12CD34EF5600000000003B /* SnapshotTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		AB12CD34EF56000000000019 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AB12CD34EF56000000000006 /* StreamLabMonitorApp */;
+			targetProxy = AB12CD34EF5600000000001A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		AB12CD34EF5600000000000D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = auto;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		AB12CD34EF5600000000000E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = auto;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		AB12CD34EF5600000000000F /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "StreamLabMonitorApp/StreamLabMonitor.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "StreamLab Monitor";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				"INFOPLIST_KEY_NSPrincipalClass[sdk=macosx*]" = NSApplication;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yannvillellas.StreamLabMonitor;
+				PRODUCT_MODULE_NAME = StreamLabMonitorApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		AB12CD34EF56000000000010 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				"CODE_SIGN_ENTITLEMENTS[sdk=macosx*]" = "StreamLabMonitorApp/StreamLabMonitor.entitlements";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "StreamLab Monitor";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				"INFOPLIST_KEY_NSPrincipalClass[sdk=macosx*]" = NSApplication;
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yannvillellas.StreamLabMonitor;
+				PRODUCT_MODULE_NAME = StreamLabMonitorApp;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		AB12CD34EF56000000000011 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yannvillellas.StreamLabMonitorSnapshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StreamLabMonitorApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StreamLabMonitorApp";
+				TEST_TARGET_NAME = StreamLabMonitorApp;
+			};
+			name = Debug;
+		};
+		AB12CD34EF56000000000012 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yannvillellas.StreamLabMonitorSnapshotTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/StreamLabMonitorApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/StreamLabMonitorApp";
+				TEST_TARGET_NAME = StreamLabMonitorApp;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		AB12CD34EF5600000000000A /* Build configuration list for PBXProject "StreamLabMonitor" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB12CD34EF5600000000000D /* Debug */,
+				AB12CD34EF5600000000000E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB12CD34EF5600000000000B /* Build configuration list for PBXNativeTarget "StreamLabMonitorApp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB12CD34EF5600000000000F /* Debug */,
+				AB12CD34EF56000000000010 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB12CD34EF5600000000000C /* Build configuration list for PBXNativeTarget "StreamLabMonitorSnapshotTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB12CD34EF56000000000011 /* Debug */,
+				AB12CD34EF56000000000012 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		AB12CD34EF5600000000001B /* XCLocalSwiftPackageReference ".." */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = "..";
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		AB12CD34EF5600000000001C /* StreamLabModel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB12CD34EF5600000000001B /* XCLocalSwiftPackageReference ".." */;
+			productName = StreamLabModel;
+		};
+		AB12CD34EF5600000000001D /* StreamLabSignalling */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB12CD34EF5600000000001B /* XCLocalSwiftPackageReference ".." */;
+			productName = StreamLabSignalling;
+		};
+		AB12CD34EF5600000000001E /* StreamLabModel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB12CD34EF5600000000001B /* XCLocalSwiftPackageReference ".." */;
+			productName = StreamLabModel;
+		};
+		AB12CD34EF5600000000001F /* StreamLabSignalling */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = AB12CD34EF5600000000001B /* XCLocalSwiftPackageReference ".." */;
+			productName = StreamLabSignalling;
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = AB12CD34EF56000000000001 /* Project object */;
+}

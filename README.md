@@ -39,6 +39,13 @@ swift run streamlab-demo studio-a sender
 The viewer prints `joined` with no peer, then `peer-joined` when the sender arrives. Kill the
 viewer and the sender gets `peer-left` and falls back to waiting, still in the room.
 
+The app target needs Xcode, which means a Mac or the CI runner:
+
+```sh
+xcodebuild build -project App/StreamLabMonitor.xcodeproj -scheme StreamLabMonitorApp -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+xcodebuild test -project App/StreamLabMonitor.xcodeproj -scheme StreamLabMonitorApp -destination 'platform=macOS' CODE_SIGNING_ALLOWED=NO
+```
+
 ## How it works
 
 `StreamLabModel` holds the JSON contract and the state machine, and imports nothing but
@@ -48,11 +55,16 @@ decodes only that branch: the synthesised `Codable` conformance cannot express a
 failing on an unknown `type` with a named error is what makes the decoder testable.
 
 `RoomStore` is a struct. A value, so a test copies one, mutates it and compares with `==`. The
-UI will wrap it in a single `@Observable` class, because a view needs identity.
+app keeps it in `RoomFeed`, a single `@Observable final class` that owns the store and one
+`SignallingClient` per room: `connect()` opens the WebSocket, sends `join`, then loops on
+`receive()` and applies every message on the MainActor.
 
 `StreamLabSignalling` is an actor over `URLSessionWebSocketTask`. It compiles and runs on Linux
 too, which is why the integration tests start the real Node server and check the handshake
 instead of mocking it.
+
+`NavigationSplitView` holds the room list and the room detail, with a sheet to add a room. The
+same view files serve iOS and macOS.
 
 ## What is tested
 
@@ -61,14 +73,16 @@ to occupied to empty transitions, `role-taken`, and the `joined` handshake over 
 WebSocket. `swift test` runs 40 tests; the four integration ones start the server on an
 ephemeral port and are skipped when the stream-lab checkout is absent.
 
-Not there yet: no SwiftUI views, no Xcode project, no CI, no screenshots. That half needs a Mac
-runner to compile. Nothing here has been compiled by Xcode.
+The app target and its workflow are written but have never run. There is no Xcode here, so no
+file under `App/` has been compiled: `.github/workflows/ci.yml` builds iOS and macOS, runs the
+hosted test on a simulator picked at runtime, and renders the snapshots as an artefact. The
+first push will tell what breaks.
 
 Not in scope: media, WebRTC, camera, authentication, persistence, more than two peers per room.
 Only loopback has been exercised — `SignallingEndpoint(host:port:)` takes any host, but nothing
-has run against a LAN address or TLS.
+has run against a LAN address or over TLS.
 
 ## Status
 
-The model and the transport are done and tested. The monitor itself, its two screens and its CI
-are still to be built.
+The model and the transport are done and tested. The app screens and the CI exist as code and
+have not been compiled once, and nothing has been run on a device.

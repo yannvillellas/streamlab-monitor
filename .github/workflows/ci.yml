@@ -1,0 +1,128 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  model-tests:
+    name: Model and signalling tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out stream-lab
+        uses: actions/checkout@v4
+        with:
+          repository: yannvillellas/stream-lab
+          ref: main
+          path: stream-lab
+      - name: Install Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install stream-lab dependencies
+        working-directory: stream-lab
+        run: npm ci
+      - name: Run swift test
+        run: |
+          set -o pipefail
+          swift test 2>&1 | tee swift-test.log
+      - name: Fail when integration tests are skipped
+        run: |
+          if grep -qi "skipped" swift-test.log; then
+            echo "Integration tests were skipped" >&2
+            exit 1
+          fi
+          if ! grep -q "Test Suite 'SignallingIntegrationTests' passed" swift-test.log; then
+            echo "SignallingIntegrationTests did not pass" >&2
+            exit 1
+          fi
+          if ! grep -q "Executed 4 tests, with 0 failures" swift-test.log; then
+            echo "The four integration tests did not run" >&2
+            exit 1
+          fi
+
+  ios-build:
+    name: iOS build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build for iOS
+        run: >-
+          xcodebuild build
+          -project App/StreamLabMonitor.xcodeproj
+          -scheme StreamLabMonitorApp
+          -destination 'generic/platform=iOS'
+          CODE_SIGNING_ALLOWED=NO
+
+  macos-build:
+    name: macOS build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build for macOS
+        run: >-
+          xcodebuild build
+          -project App/StreamLabMonitor.xcodeproj
+          -scheme StreamLabMonitorApp
+          -destination 'platform=macOS'
+          CODE_SIGNING_ALLOWED=NO
+
+  ios-simulator-tests:
+    name: iOS simulator tests
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pick an available iPhone simulator
+        id: simulator
+        run: |
+          UDID=$(xcrun simctl list devices available | awk -F '[()]' '/iPhone/ { print $2; exit }')
+          if [ -z "$UDID" ]; then
+            echo "No available iPhone simulator was found" >&2
+            exit 1
+          fi
+          echo "Using simulator $UDID"
+          echo "udid=$UDID" >> "$GITHUB_OUTPUT"
+      - name: Boot the simulator
+        run: xcrun simctl boot "${{ steps.simulator.outputs.udid }}" || true
+      - name: Wait for the simulator
+        run: xcrun simctl bootstatus "${{ steps.simulator.outputs.udid }}" -b
+      - name: Run tests on the simulator
+        run: >-
+          xcodebuild test
+          -project App/StreamLabMonitor.xcodeproj
+          -scheme StreamLabMonitorApp
+          -destination "id=${{ steps.simulator.outputs.udid }}"
+          CODE_SIGNING_ALLOWED=NO
+
+  snapshots:
+    name: UI snapshots
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Render the snapshots
+        env:
+          SNAPSHOT_OUTPUT_DIR: ${{ runner.temp }}/snapshots
+          TEST_RUNNER_SNAPSHOT_OUTPUT_DIR: ${{ runner.temp }}/snapshots
+        run: |
+          mkdir -p "$SNAPSHOT_OUTPUT_DIR"
+          xcodebuild test \
+            -project App/StreamLabMonitor.xcodeproj \
+            -scheme StreamLabMonitorApp \
+            -destination 'platform=macOS' \
+            -only-testing:StreamLabMonitorSnapshotTests \
+            CODE_SIGNING_ALLOWED=NO
+      - name: Upload the snapshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-snapshots
+          path: ${{ runner.temp }}/snapshots
+          if-no-files-found: error
