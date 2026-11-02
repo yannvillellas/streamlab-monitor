@@ -1,6 +1,12 @@
 import Foundation
 import XCTest
 
+#if canImport(Darwin)
+import Darwin
+#else
+import Glibc
+#endif
+
 @testable import StreamLabModel
 @testable import StreamLabSignalling
 
@@ -90,10 +96,20 @@ struct SignallingServer {
         SignallingEndpoint(host: "127.0.0.1", port: port)
     }
 
+    /// Kills the child without ever waiting unboundedly: a server that ignores SIGTERM used to
+    /// block `waitUntilExit()` and hold the whole test job until its ceiling.
     func stop() {
+        guard process.isRunning else { return }
+
+        process.terminate()
+
+        let deadline = Date().addingTimeInterval(5)
+        while process.isRunning, Date() < deadline {
+            usleep(50_000)
+        }
+
         if process.isRunning {
-            process.terminate()
-            process.waitUntilExit()
+            kill(process.processIdentifier, SIGKILL)
         }
     }
 }
@@ -111,7 +127,7 @@ func withTimeout<T: Sendable>(
     try await withCheckedThrowingContinuation { continuation in
         let race = TimeoutRace(continuation: continuation)
 
-        Task {
+        let abandoned = Task {
             do {
                 race.finish(.success(try await operation()))
             } catch {
@@ -121,6 +137,7 @@ func withTimeout<T: Sendable>(
 
         Task {
             try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+            abandoned.cancel()
             race.finish(.failure(TimeoutError(seconds: seconds)))
         }
     }
@@ -154,6 +171,10 @@ final class SignallingIntegrationTests: XCTestCase {
     private var server: SignallingServer?
 
     override func setUp() async throws {
+        #if os(macOS)
+        // A hung test fails in a minute instead of holding the job until its ceiling.
+        executionTimeAllowance = 60
+        #endif
         server = try await SignallingServer.start()
     }
 

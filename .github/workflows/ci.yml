@@ -35,7 +35,7 @@ jobs:
       - name: Run swift test
         run: |
           set -o pipefail
-          swift test 2>&1 | tee swift-test.log
+          script -q /dev/null swift test 2>&1 | tee swift-test.log
       - name: Fail when integration tests are skipped
         run: |
           if grep -qi "skipped" swift-test.log; then
