@@ -1,30 +1,40 @@
+import CoreGraphics
 import Foundation
+import ImageIO
 import SwiftUI
 import XCTest
 
 import StreamLabModel
-import StreamLabSignalling
 @testable import StreamLabMonitorApp
 
 #if os(macOS)
 import AppKit
-#elseif os(iOS)
-import UIKit
 #endif
 
 final class SnapshotTests: XCTestCase {
     @MainActor
     func testRoomListRendersAPNG() async throws {
-        let feed = RoomFeed(store: RoomStore.fixture())
-        let view = NavigationSplitView {
-            RoomListView(selection: .constant("roof-cam" as String?))
-        } detail: {
-            Color.white
+        let store = RoomStore.fixture()
+
+        let view = VStack(alignment: .leading, spacing: 0) {
+            Text("Rooms")
+                .font(.title2.weight(.semibold))
+                .padding(.horizontal, 16)
+                .padding(.vertical, 12)
+            Divider()
+            ForEach(store.sortedRooms) { room in
+                RoomRow(room: room)
+                    .padding(.horizontal, 16)
+                    .padding(.vertical, 10)
+                Divider()
+            }
+            Spacer(minLength: 0)
         }
-        .environment(feed)
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(Color.white)
         .environment(\.colorScheme, .light)
 
-        try render(view, size: CGSize(width: 440, height: 640), name: "room-list.png")
+        try render(view, size: CGSize(width: 440, height: 480), name: "room-list.png")
     }
 
     @MainActor
@@ -34,7 +44,9 @@ final class SnapshotTests: XCTestCase {
         XCTAssertGreaterThanOrEqual(room.events.count, 2, "the detail snapshot needs a filled feed")
 
         let feed = RoomFeed(store: store)
-        let view = RoomDetailView(room: room)
+        let view = RoomDetailContent(room: room)
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+            .background(Color.white)
             .environment(feed)
             .environment(\.colorScheme, .light)
 
@@ -73,7 +85,51 @@ final class SnapshotTests: XCTestCase {
 
         XCTAssertGreaterThan(data.count, 0, "\(name) is empty")
         XCTAssertTrue(FileManager.default.fileExists(atPath: url.path))
+        XCTAssertGreaterThan(
+            distinctColors(in: data),
+            5,
+            "\(name) looks blank or like the ImageRenderer placeholder, not a rendered view"
+        )
         print("snapshot: \(url.path)")
+    }
+
+    private func distinctColors(in data: Data) -> Int {
+        guard let source = CGImageSourceCreateWithData(data as CFData, nil),
+              let image = CGImageSourceCreateImageAtIndex(source, 0, nil)
+        else {
+            return 0
+        }
+
+        let width = image.width
+        let height = image.height
+        guard width > 0, height > 0 else { return 0 }
+
+        var pixels = [UInt8](repeating: 0, count: width * height * 4)
+        guard let space = CGColorSpace(name: CGColorSpace.sRGB),
+              let context = CGContext(
+                  data: &pixels,
+                  width: width,
+                  height: height,
+                  bitsPerComponent: 8,
+                  bytesPerRow: width * 4,
+                  space: space,
+                  bitmapInfo: CGImageAlphaInfo.premultipliedLast.rawValue
+              )
+        else {
+            return 0
+        }
+
+        context.draw(image, in: CGRect(x: 0, y: 0, width: width, height: height))
+
+        var colors = Set<UInt32>()
+        for index in stride(from: 0, to: pixels.count, by: 4 * 7) {
+            let red = UInt32(pixels[index])
+            let green = UInt32(pixels[index + 1])
+            let blue = UInt32(pixels[index + 2])
+            colors.insert((red << 16) | (green << 8) | blue)
+            if colors.count > 64 { break }
+        }
+        return colors.count
     }
 
     private func snapshotDirectory() throws -> URL {
@@ -84,11 +140,6 @@ final class SnapshotTests: XCTestCase {
             let directory = URL(fileURLWithPath: raw, isDirectory: true)
             try FileManager.default.createDirectory(at: directory, withIntermediateDirectories: true)
             return directory
-        }
-
-        let local = URL(fileURLWithPath: "snapshots", isDirectory: true)
-        if (try? FileManager.default.createDirectory(at: local, withIntermediateDirectories: true)) != nil {
-            return local
         }
 
         let fallback = URL(fileURLWithPath: NSTemporaryDirectory(), isDirectory: true)

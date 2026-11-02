@@ -96,12 +96,20 @@ jobs:
       - name: Wait for the simulator
         run: xcrun simctl bootstatus "${{ steps.simulator.outputs.udid }}" -b
       - name: Run tests on the simulator
+        env:
+          TEST_RUNNER_SNAPSHOT_OUTPUT_DIR: ${{ runner.temp }}/snapshots-ios
         run: >-
           xcodebuild test
           -project App/StreamLabMonitor.xcodeproj
           -scheme StreamLabMonitorApp
           -destination "id=${{ steps.simulator.outputs.udid }}"
           CODE_SIGNING_ALLOWED=NO
+      - name: Upload the iOS snapshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-snapshots-ios
+          path: ${{ runner.temp }}/snapshots-ios
+          if-no-files-found: error
 
   snapshots:
     name: UI snapshots
