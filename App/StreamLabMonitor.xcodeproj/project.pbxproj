@@ -20,10 +20,18 @@
 		AB12CD34EF5600000000003B /* SnapshotTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000029 /* SnapshotTests.swift */; };
 		AB12CD34EF5600000000003C /* StreamLabModel in Frameworks */ = {isa = PBXBuildFile; productRef = AB12CD34EF5600000000001E /* StreamLabModel */; };
 		AB12CD34EF5600000000003D /* StreamLabSignalling in Frameworks */ = {isa = PBXBuildFile; productRef = AB12CD34EF5600000000001F /* StreamLabSignalling */; };
+		AB12CD34EF56000000000040 /* MonitorUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB12CD34EF56000000000042 /* MonitorUITests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		AB12CD34EF5600000000001A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AB12CD34EF56000000000001 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = AB12CD34EF56000000000006;
+			remoteInfo = StreamLabMonitorApp;
+		};
+		AB12CD34EF56000000000041 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = AB12CD34EF56000000000001 /* Project object */;
 			proxyType = 1;
@@ -45,6 +53,8 @@
 		AB12CD34EF56000000000027 /* RoomStateBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoomStateBadge.swift; sourceTree = "<group>"; };
 		AB12CD34EF56000000000028 /* AddRoomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddRoomView.swift; sourceTree = "<group>"; };
 		AB12CD34EF56000000000029 /* SnapshotTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotTests.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000042 /* MonitorUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MonitorUITests.swift; sourceTree = "<group>"; };
+		AB12CD34EF56000000000043 /* StreamLabMonitorUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = StreamLabMonitorUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -66,6 +76,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB12CD34EF56000000000044 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -74,6 +91,7 @@
 			children = (
 				AB12CD34EF56000000000003 /* StreamLabMonitorApp */,
 				AB12CD34EF56000000000004 /* StreamLabMonitorSnapshotTests */,
+				AB12CD34EF56000000000045 /* StreamLabMonitorUITests */,
 				AB12CD34EF56000000000005 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -107,8 +125,17 @@
 			children = (
 				AB12CD34EF56000000000008 /* StreamLabMonitorApp.app */,
 				AB12CD34EF56000000000009 /* StreamLabMonitorSnapshotTests.xctest */,
+				AB12CD34EF56000000000043 /* StreamLabMonitorUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		AB12CD34EF56000000000045 /* StreamLabMonitorUITests */ = {
+			isa = PBXGroup;
+			children = (
+				AB12CD34EF56000000000042 /* MonitorUITests.swift */,
+			);
+			path = StreamLabMonitorUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -157,6 +184,24 @@
 			productReference = AB12CD34EF56000000000009 /* StreamLabMonitorSnapshotTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
+		AB12CD34EF56000000000046 /* StreamLabMonitorUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = AB12CD34EF5600000000004C /* Build configuration list for PBXNativeTarget "StreamLabMonitorUITests" */;
+			buildPhases = (
+				AB12CD34EF56000000000047 /* Sources */,
+				AB12CD34EF56000000000044 /* Frameworks */,
+				AB12CD34EF56000000000048 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				AB12CD34EF56000000000049 /* PBXTargetDependency */,
+			);
+			name = StreamLabMonitorUITests;
+			productName = StreamLabMonitorUITests;
+			productReference = AB12CD34EF56000000000043 /* StreamLabMonitorUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -171,6 +216,10 @@
 						CreatedOnToolsVersion = 16.0;
 					};
 					AB12CD34EF56000000000007 = {
+						CreatedOnToolsVersion = 16.0;
+						TestTargetID = AB12CD34EF56000000000006;
+					};
+					AB12CD34EF56000000000046 = {
 						CreatedOnToolsVersion = 16.0;
 						TestTargetID = AB12CD34EF56000000000006;
 					};
@@ -194,6 +243,7 @@
 			targets = (
 				AB12CD34EF56000000000006 /* StreamLabMonitorApp */,
 				AB12CD34EF56000000000007 /* StreamLabMonitorSnapshotTests */,
+				AB12CD34EF56000000000046 /* StreamLabMonitorUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -207,6 +257,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		AB12CD34EF56000000000018 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		AB12CD34EF56000000000048 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -239,6 +296,14 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		AB12CD34EF56000000000047 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				AB12CD34EF56000000000040 /* MonitorUITests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -246,6 +311,11 @@
 			isa = PBXTargetDependency;
 			target = AB12CD34EF56000000000006 /* StreamLabMonitorApp */;
 			targetProxy = AB12CD34EF5600000000001A /* PBXContainerItemProxy */;
+		};
+		AB12CD34EF56000000000049 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = AB12CD34EF56000000000006 /* StreamLabMonitorApp */;
+			targetProxy = AB12CD34EF56000000000041 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -505,6 +575,52 @@
 			};
 			name = Release;
 		};
+		AB12CD34EF5600000000004A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yannvillellas.StreamLabMonitorUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = StreamLabMonitorApp;
+			};
+			name = Debug;
+		};
+		AB12CD34EF5600000000004B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../Frameworks",
+					"@loader_path/Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MARKETING_VERSION = 0.1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.yannvillellas.StreamLabMonitorUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = auto;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
+				SWIFT_VERSION = 6.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = StreamLabMonitorApp;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -531,6 +647,15 @@
 			buildConfigurations = (
 				AB12CD34EF56000000000011 /* Debug */,
 				AB12CD34EF56000000000012 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		AB12CD34EF5600000000004C /* Build configuration list for PBXNativeTarget "StreamLabMonitorUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AB12CD34EF5600000000004A /* Debug */,
+				AB12CD34EF5600000000004B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

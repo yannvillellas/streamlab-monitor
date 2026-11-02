@@ -17,6 +17,7 @@ struct AddRoomView: View {
         NavigationStack {
             Form {
                 TextField("Room name", text: $name)
+                    .accessibilityIdentifier("room-name")
 
                 Picker("Role", selection: $role) {
                     ForEach(Role.allCases, id: \.self) { role in
@@ -24,6 +25,7 @@ struct AddRoomView: View {
                     }
                 }
                 .pickerStyle(.segmented)
+                .accessibilityIdentifier("room-role")
             }
             .formStyle(.grouped)
             .navigationTitle("New room")
@@ -37,6 +39,7 @@ struct AddRoomView: View {
                         dismiss()
                     }
                     .disabled(trimmedName.isEmpty)
+                    .accessibilityIdentifier("add-room-confirm")
                 }
             }
         }

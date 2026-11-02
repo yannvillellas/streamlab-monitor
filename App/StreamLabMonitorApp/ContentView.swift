@@ -15,6 +15,7 @@ struct ContentView: View {
                         Button("Add room", systemImage: "plus") {
                             isAddingRoom = true
                         }
+                        .accessibilityIdentifier("add-room")
                     }
                 }
         } detail: {

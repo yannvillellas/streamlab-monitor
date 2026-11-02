@@ -99,6 +99,30 @@ jobs:
         run: xcrun simctl boot "${{ steps.simulator.outputs.udid }}" || true
       - name: Wait for the simulator
         run: xcrun simctl bootstatus "${{ steps.simulator.outputs.udid }}" -b
+      - name: Check out stream-lab
+        uses: actions/checkout@v4
+        with:
+          repository: yannvillellas/stream-lab
+          ref: main
+          path: stream-lab
+      - name: Install Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Start the signalling server
+        run: |
+          (cd stream-lab && npm ci)
+          (cd stream-lab && PORT=8080 nohup ./node_modules/.bin/tsx server/src/index.ts > "$RUNNER_TEMP/server.log" 2>&1 &)
+          for attempt in $(seq 1 30); do
+            if curl -sf http://127.0.0.1:8080/health > /dev/null; then
+              echo "Signalling server is up"
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "The signalling server never answered on 127.0.0.1:8080" >&2
+          cat "$RUNNER_TEMP/server.log" >&2
+          exit 1
       - name: Run tests on the simulator
         env:
           TEST_RUNNER_SNAPSHOT_OUTPUT_DIR: ${{ runner.temp }}/snapshots-ios
