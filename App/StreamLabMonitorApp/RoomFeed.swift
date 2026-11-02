@@ -43,8 +43,7 @@ final class RoomFeed {
 
         tasks[room] = Task { @MainActor [weak self] in
             defer {
-                guard let self else { return }
-                if self.sessions[room] == token {
+                if let self, self.sessions[room] == token {
                     self.sessions[room] = nil
                     self.tasks[room] = nil
                     self.clients[room] = nil
