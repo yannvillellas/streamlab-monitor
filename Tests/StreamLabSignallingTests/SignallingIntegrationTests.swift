@@ -98,22 +98,50 @@ struct SignallingServer {
     }
 }
 
+/// Races `operation` against a deadline and **does not wait** for the loser.
+///
+/// A structured task group cannot do this: it awaits its children on exit, and
+/// `URLSessionWebSocketTask.receive()` ignores cancellation, so a timed-out wait would keep the
+/// whole suite alive. The operation task is abandoned on timeout; it cannot block the tests, and
+/// the process exits with the runner.
 func withTimeout<T: Sendable>(
     seconds: Double = 10,
     _ operation: @escaping @Sendable () async throws -> T
 ) async throws -> T {
-    try await withThrowingTaskGroup(of: T.self) { group in
-        group.addTask { try await operation() }
-        group.addTask {
-            try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
-            throw TimeoutError(seconds: seconds)
+    try await withCheckedThrowingContinuation { continuation in
+        let race = TimeoutRace(continuation: continuation)
+
+        Task {
+            do {
+                race.finish(.success(try await operation()))
+            } catch {
+                race.finish(.failure(error))
+            }
         }
 
-        defer { group.cancelAll() }
-        guard let first = try await group.next() else {
-            throw TimeoutError(seconds: seconds)
+        Task {
+            try? await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))
+            race.finish(.failure(TimeoutError(seconds: seconds)))
         }
-        return first
+    }
+}
+
+private final class TimeoutRace<T: Sendable>: @unchecked Sendable {
+    private let lock = NSLock()
+    private var continuation: CheckedContinuation<T, any Error>?
+
+    init(continuation: CheckedContinuation<T, any Error>) {
+        self.continuation = continuation
+    }
+
+    /// The first result wins; later ones are dropped, so the continuation is resumed once.
+    func finish(_ result: Result<T, any Error>) {
+        lock.lock()
+        let continuation = self.continuation
+        self.continuation = nil
+        lock.unlock()
+
+        continuation?.resume(with: result)
     }
 }
 

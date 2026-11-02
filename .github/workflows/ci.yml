@@ -16,6 +16,7 @@ jobs:
   model-tests:
     name: Model and signalling tests
     runs-on: macos-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Check out stream-lab
@@ -53,6 +54,7 @@ jobs:
   ios-build:
     name: iOS build
     runs-on: macos-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Build for iOS
@@ -66,6 +68,7 @@ jobs:
   macos-build:
     name: macOS build
     runs-on: macos-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Build for macOS
@@ -79,6 +82,7 @@ jobs:
   ios-simulator-tests:
     name: iOS simulator tests
     runs-on: macos-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Pick an available iPhone simulator
@@ -114,6 +118,7 @@ jobs:
   snapshots:
     name: UI snapshots
     runs-on: macos-latest
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Render the snapshots
