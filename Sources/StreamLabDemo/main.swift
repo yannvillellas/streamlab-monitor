@@ -104,6 +104,18 @@ do {
     }
 } catch {
     emit("✕ \(error)")
+
+    let detail = String(describing: error)
+    store.endSession(
+        room: arguments.room,
+        state: .failed(code: "transport", message: detail),
+        at: Date(),
+        reason: "transport · \(detail)"
+    )
+    if let event = store[arguments.room]?.events.last {
+        persist(event)
+    }
+
     await client.close()
     if let record = store[arguments.room] {
         emit("final state: \(record.state.label)")
