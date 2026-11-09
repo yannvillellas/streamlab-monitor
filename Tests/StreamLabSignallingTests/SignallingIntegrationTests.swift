@@ -64,7 +64,9 @@ struct SignallingServer {
         let logURL = FileManager.default.temporaryDirectory
             .appendingPathComponent("signalling-\(UUID().uuidString).log")
 
-        FileManager.default.createFile(atPath: logURL.path, contents: nil)
+        guard FileManager.default.createFile(atPath: logURL.path, contents: nil) else {
+            throw Self.unavailable("Cannot create the server log at \(logURL.path)")
+        }
         guard let logHandle = FileHandle(forWritingAtPath: logURL.path) else {
             throw Self.unavailable("Cannot write the server log to \(logURL.path)")
         }
