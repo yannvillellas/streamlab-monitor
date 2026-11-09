@@ -10,10 +10,25 @@ import Glibc
 @testable import StreamLabModel
 @testable import StreamLabSignalling
 
+struct SignallingServerUnavailable: Error, CustomStringConvertible {
+    let message: String
+    var description: String { message }
+}
+
 struct SignallingServer {
     let port: Int
     let process: Process
     let logURL: URL
+
+    /// Whether the tests run in CI, where the workflow provisions the server.
+    static var isCI: Bool {
+        ProcessInfo.processInfo.environment["CI"] != nil
+    }
+
+    /// Fails in CI and skips locally: the sibling checkout is optional on a developer machine.
+    static func unavailable(_ message: String) -> Error {
+        isCI ? SignallingServerUnavailable(message: message) : XCTSkip(message)
+    }
 
     static func resolveRepository() throws -> URL {
         let environment = ProcessInfo.processInfo.environment["STREAM_LAB_DIR"]
@@ -35,7 +50,7 @@ struct SignallingServer {
             }
         }
 
-        throw XCTSkip(
+        throw unavailable(
             """
             No usable stream-lab checkout. Expected server/src/index.ts and \
             node_modules/tsx/dist/cli.mjs in STREAM_LAB_DIR or ./stream-lab. \
@@ -51,7 +66,7 @@ struct SignallingServer {
 
         FileManager.default.createFile(atPath: logURL.path, contents: nil)
         guard let logHandle = FileHandle(forWritingAtPath: logURL.path) else {
-            throw XCTSkip("Cannot write the server log to \(logURL.path)")
+            throw Self.unavailable("Cannot write the server log to \(logURL.path)")
         }
 
         let process = Process()
@@ -84,12 +99,12 @@ struct SignallingServer {
             }
 
             if !process.isRunning {
-                throw XCTSkip("The Node server exited early:\n\(log)")
+                throw Self.unavailable("The Node server exited early:\n\(log)")
             }
         }
 
         process.terminate()
-        throw XCTSkip("The Node server did not report a port within 30s")
+        throw Self.unavailable("The Node server did not report a port within 30s")
     }
 
     var endpoint: SignallingEndpoint {
