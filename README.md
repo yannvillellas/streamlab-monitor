@@ -92,8 +92,8 @@ same view files serve iOS and macOS.
 
 Against the real server, on Linux: decoding of every message including `peer: null`, the empty
 to occupied to empty transitions, `role-taken`, and the `joined` handshake over a real
-WebSocket. `swift test` runs 53 tests; the four integration ones start the server on an
-ephemeral port and are skipped when the stream-lab checkout is absent, and the twelve storage
+WebSocket. `swift test` runs 56 tests; the four integration ones start the server on an
+ephemeral port and fail in CI when the stream-lab checkout is absent, and the fifteen storage
 ones run on a memory database and on a file that is closed and reopened.
 
 The app target is built by a macOS runner, not here: CI compiles it for iOS and macOS, runs the
