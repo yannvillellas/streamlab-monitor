@@ -30,6 +30,47 @@ public enum RoomState: Equatable, Sendable {
     }
 }
 
+extension RoomState: Codable {
+    private enum CodingKeys: String, CodingKey {
+        case state
+        case code
+        case message
+    }
+
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        switch try container.decode(String.self, forKey: .state) {
+        case "unknown": self = .unknown
+        case "waiting": self = .waiting
+        case "connected": self = .connected
+        case "failed":
+            self = .failed(
+                code: try container.decode(String.self, forKey: .code),
+                message: try container.decode(String.self, forKey: .message)
+            )
+        case let other:
+            throw DecodingError.dataCorruptedError(
+                forKey: .state,
+                in: container,
+                debugDescription: "unknown room state '\(other)'"
+            )
+        }
+    }
+
+    public func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        switch self {
+        case .unknown: try container.encode("unknown", forKey: .state)
+        case .waiting: try container.encode("waiting", forKey: .state)
+        case .connected: try container.encode("connected", forKey: .state)
+        case .failed(let code, let message):
+            try container.encode("failed", forKey: .state)
+            try container.encode(code, forKey: .code)
+            try container.encode(message, forKey: .message)
+        }
+    }
+}
+
 public struct RoomEvent: Identifiable, Equatable, Sendable {
     public enum Direction: String, Equatable, Sendable {
         case outbound
@@ -42,19 +83,23 @@ public struct RoomEvent: Identifiable, Equatable, Sendable {
     public let direction: Direction
     public let text: String
     public let message: ServerMessage?
+    /// The state the room was in after this event.
+    public let state: RoomState?
 
     public init(
         id: UInt64,
         receivedAt: Date,
         direction: Direction,
         text: String,
-        message: ServerMessage? = nil
+        message: ServerMessage? = nil,
+        state: RoomState? = nil
     ) {
         self.id = id
         self.receivedAt = receivedAt
         self.direction = direction
         self.text = text
         self.message = message
+        self.state = state
     }
 }
 
@@ -105,6 +150,11 @@ public struct RoomRecord: Identifiable, Equatable, Sendable {
         peer = nil
         state = next
         append(text: reason, direction: .local, at: date)
+    }
+
+    /// Restores the state an event recorded, without appending a new one.
+    public mutating func restore(state next: RoomState) {
+        state = next
     }
 
     @discardableResult
@@ -163,7 +213,8 @@ public struct RoomRecord: Identifiable, Equatable, Sendable {
             receivedAt: date,
             direction: direction,
             text: text,
-            message: message
+            message: message,
+            state: state
         )
         events.append(event)
 

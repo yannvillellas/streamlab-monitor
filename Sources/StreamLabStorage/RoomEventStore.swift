@@ -31,7 +31,7 @@ public struct StoredRoom: Equatable, Sendable {
 /// log through `RoomRecord` rebuilds the state machine without a second copy of the
 /// transition rules.
 public final class RoomEventStore {
-    public static let schemaVersion: Int64 = 1
+    public static let schemaVersion: Int64 = 2
 
     let database: SQLiteDatabase
 
@@ -86,7 +86,8 @@ public final class RoomEventStore {
                 received_at REAL NOT NULL,
                 direction TEXT NOT NULL CHECK (direction IN ('outbound', 'inbound', 'local')),
                 text TEXT NOT NULL,
-                payload TEXT
+                payload TEXT,
+                state TEXT
             );
 
             CREATE INDEX IF NOT EXISTS events_by_room ON events(room, seq);
@@ -94,6 +95,11 @@ public final class RoomEventStore {
             PRAGMA user_version = \(Self.schemaVersion);
             """
         )
+
+        // A version 1 file has no `state` column.
+        if version == 1 {
+            try database.execute("ALTER TABLE events ADD COLUMN state TEXT")
+        }
     }
 
     // MARK: Writing
@@ -134,10 +140,26 @@ public final class RoomEventStore {
             payload = nil
         }
 
+        let state: String?
+        if let eventState = event.state {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = [.sortedKeys]
+            do {
+                state = String(decoding: try encoder.encode(eventState), as: UTF8.self)
+            } catch {
+                throw StorageError.corruptRow(
+                    sequence: Int64(event.id),
+                    message: String(describing: error)
+                )
+            }
+        } else {
+            state = nil
+        }
+
         let statement = try database.prepare(
             """
-            INSERT INTO events (room, session_id, event_id, received_at, direction, text, payload)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO events (room, session_id, event_id, received_at, direction, text, payload, state)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
             """
         )
         defer { statement.reset() }
@@ -152,6 +174,11 @@ public final class RoomEventStore {
             try statement.bind(7, payload)
         } else {
             try statement.bindNull(7)
+        }
+        if let state {
+            try statement.bind(8, state)
+        } else {
+            try statement.bindNull(8)
         }
 
         _ = try statement.step()
@@ -209,7 +236,7 @@ public final class RoomEventStore {
     public func events(in room: String) throws -> [RoomEvent] {
         let statement = try database.prepare(
             """
-            SELECT seq, event_id, received_at, direction, text, payload
+            SELECT seq, event_id, received_at, direction, text, payload, state
             FROM events WHERE room = ? ORDER BY seq
             """
         )
@@ -240,13 +267,31 @@ public final class RoomEventStore {
                 }
             }
 
+            let state: RoomState?
+            if statement.isNull(6) {
+                state = nil
+            } else {
+                do {
+                    state = try JSONDecoder().decode(
+                        RoomState.self,
+                        from: Data(statement.text(6).utf8)
+                    )
+                } catch {
+                    throw StorageError.corruptRow(
+                        sequence: sequence,
+                        message: String(describing: error)
+                    )
+                }
+            }
+
             result.append(
                 RoomEvent(
                     id: UInt64(statement.int64(1)),
                     receivedAt: Date(timeIntervalSince1970: statement.double(2)),
                     direction: direction,
                     text: statement.text(4),
-                    message: message
+                    message: message,
+                    state: state
                 )
             )
         }
@@ -273,6 +318,11 @@ public final class RoomEventStore {
                 record.apply(message, at: event.receivedAt)
             } else {
                 record.record(text: event.text, direction: event.direction, at: event.receivedAt)
+            }
+
+            // The logged state wins over the one derived from the message.
+            if let state = event.state {
+                record.restore(state: state)
             }
         }
         return record

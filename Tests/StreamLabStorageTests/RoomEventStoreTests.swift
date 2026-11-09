@@ -325,4 +325,97 @@ final class RoomEventStoreTests: XCTestCase {
         )
         XCTAssertEqual(try store.events(in: "nowhere"), [])
     }
+
+    // MARK: State of a local event
+
+    func testALocalEventKeepsTheStateItProduced() throws {
+        let store = try RoomEventStore.inMemory()
+        try registerStudioA(in: store, role: .viewer)
+
+        var live = RoomRecord(room: "studio-a", role: .viewer, sessionId: "session-1")
+        live.beginJoin(at: t0)
+        try store.append(live.events, to: "studio-a", sessionId: "session-1")
+
+        live.endSession(
+            state: .failed(code: "transport", message: "connection refused"),
+            at: t0.addingTimeInterval(1),
+            reason: "transport · connection refused"
+        )
+        try store.append(
+            try XCTUnwrap(live.events.last),
+            to: "studio-a",
+            sessionId: "session-1"
+        )
+
+        let read = try store.events(in: "studio-a")
+        XCTAssertEqual(read.map(\.state), [.waiting, .failed(code: "transport", message: "connection refused")])
+
+        let replayed = try XCTUnwrap(try store.replay("studio-a"))
+        XCTAssertEqual(
+            replayed.state,
+            .failed(code: "transport", message: "connection refused"),
+            "a session that died on the transport must not replay as waiting"
+        )
+    }
+
+    func testALocalEventWithoutAStateStillReplays() throws {
+        let store = try RoomEventStore.inMemory()
+        try registerStudioA(in: store)
+
+        try store.append(
+            RoomEvent(id: 1, receivedAt: t0, direction: .local, text: "connecting"),
+            to: "studio-a",
+            sessionId: "session-1"
+        )
+
+        let stored = try store.events(in: "studio-a")
+        XCTAssertEqual(stored.map(\.state), [nil], "the row carries no state")
+
+        let replayed = try XCTUnwrap(try store.replay("studio-a"))
+        XCTAssertEqual(replayed.state, .unknown)
+        XCTAssertEqual(
+            replayed.events.map(\.state),
+            [.unknown],
+            "a replayed event records the state the record was in, not the missing column"
+        )
+    }
+
+    func testAVersionOneFileIsMigratedInsteadOfRefused() throws {
+        let url = temporaryDatabaseURL()
+
+        // The shape a version 1 file has on disk: no `state` column.
+        let legacy = try SQLiteDatabase(path: url.path)
+        try legacy.execute(
+            """
+            CREATE TABLE rooms (
+                room TEXT PRIMARY KEY,
+                role TEXT NOT NULL CHECK (role IN ('sender', 'viewer')),
+                session_id TEXT NOT NULL
+            );
+            CREATE TABLE events (
+                seq INTEGER PRIMARY KEY AUTOINCREMENT,
+                room TEXT NOT NULL REFERENCES rooms(room) ON DELETE CASCADE,
+                session_id TEXT NOT NULL,
+                event_id INTEGER NOT NULL,
+                received_at REAL NOT NULL,
+                direction TEXT NOT NULL CHECK (direction IN ('outbound', 'inbound', 'local')),
+                text TEXT NOT NULL,
+                payload TEXT
+            );
+            PRAGMA user_version = 1;
+            """
+        )
+        try legacy.execute(
+            "INSERT INTO rooms (room, role, session_id) VALUES ('studio-a', 'sender', 'session-1')"
+        )
+        legacy.close()
+
+        let store = try RoomEventStore(databaseURL: url)
+        XCTAssertEqual(try store.database.scalarInt("PRAGMA user_version"), RoomEventStore.schemaVersion)
+
+        let replayed = try XCTUnwrap(try store.replay("studio-a"))
+        XCTAssertEqual(replayed.events, [], "the old rows survive, they simply carry no state")
+        XCTAssertEqual(replayed.role, .sender)
+        store.close()
+    }
 }
