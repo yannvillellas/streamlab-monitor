@@ -20,16 +20,12 @@ struct SignallingServer {
     let process: Process
     let logURL: URL
 
-    /// Whether the tests are running in CI, where the server is provisioned by the workflow.
-    ///
-    /// Locally a missing checkout is a reason to skip: the sibling repository is optional.
-    /// In CI it is a broken job, so the test fails instead of reporting a skip that
-    /// `swift test` counts as success.
+    /// Whether the tests run in CI, where the workflow provisions the server.
     static var isCI: Bool {
         ProcessInfo.processInfo.environment["CI"] != nil
     }
 
-    /// Fails in CI and skips locally.
+    /// Fails in CI and skips locally: the sibling checkout is optional on a developer machine.
     static func unavailable(_ message: String) -> Error {
         isCI ? SignallingServerUnavailable(message: message) : XCTSkip(message)
     }

@@ -1,3 +1,2 @@
-// The system SQLite. The module map links the library; this header only makes
-// the declarations visible to Swift.
+// The module map links libsqlite3; this header only exposes its declarations to Swift.
 #include <sqlite3.h>
