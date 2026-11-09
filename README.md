@@ -10,11 +10,14 @@ the supervision side, and it speaks only the signalling protocol.
 - The four room states: unknown, waiting, connected, error.
 - Every message of the JSON contract, decoded from `server/src/protocol.ts`.
 - An event feed per room, with the offer and ICE traffic the server relays.
+- An append-only log of those events in SQLite, replayed through the same state machine.
 - A command-line client, `streamlab-demo`, for watching a room without the app.
 
 ## Getting started
 
-Requires Swift 6.4, or Xcode 16 for the app target.
+Requires Swift 6.4, or Xcode 16 for the app target. SQLite comes from the system, so the C
+headers must be installed: `sudo dnf install sqlite-devel`, or `sudo apt install libsqlite3-dev`.
+macOS has them in the SDK.
 
 ```sh
 git clone https://github.com/yannvillellas/stream-lab.git ~/src/stream-lab
@@ -24,6 +27,10 @@ swift test
 
 On Fedora 44 the toolchain comes from `swiftly` with `--platform fedora41`: swiftly 1.2.0 does
 not know Fedora 44 yet, and the Fedora 41 build of the compiler runs on it.
+
+With binutils 2.47, Swift 6.4.2 on Linux stops while probing the linker (`ld -version_details`):
+add `--build-system native` to `swift build` and `swift test` until SwiftPM learns the new
+output.
 
 To watch a real room, start the server and two clients:
 
@@ -38,6 +45,14 @@ swift run streamlab-demo studio-a sender
 
 The viewer prints `joined` with no peer, then `peer-joined` when the sender arrives. Kill the
 viewer and the sender gets `peer-left` and falls back to waiting, still in the room.
+
+Add `--db <file>` to keep a room's events in SQLite. A client started later replays what the
+earlier one stored before it joins:
+
+```sh
+swift run streamlab-demo studio-a sender 127.0.0.1 8080 --db /tmp/studio-a.sqlite
+sqlite3 /tmp/studio-a.sqlite 'select seq, direction, text from events order by seq'
+```
 
 The app target needs Xcode, which means a Mac or the CI runner:
 
@@ -63,6 +78,13 @@ app keeps it in `RoomFeed`, a single `@Observable final class` that owns the sto
 too, which is why the integration tests start the real Node server and check the handshake
 instead of mocking it.
 
+`StreamLabStorage` keeps the events in SQLite and reads them back through `RoomRecord`, so the
+transition rules are not written a second time. It depends on `StreamLabModel` alone, which is
+what keeps the interface out of it: another front end, on another platform, can use the same
+layer. `RoomEventStore` refuses a database written by a newer schema instead of reading it
+blind, and a row whose payload no longer decodes fails the read instead of disappearing from
+the feed.
+
 `NavigationSplitView` holds the room list and the room detail, with a sheet to add a room. The
 same view files serve iOS and macOS.
 
@@ -70,8 +92,9 @@ same view files serve iOS and macOS.
 
 Against the real server, on Linux: decoding of every message including `peer: null`, the empty
 to occupied to empty transitions, `role-taken`, and the `joined` handshake over a real
-WebSocket. `swift test` runs 41 tests; the four integration ones start the server on an
-ephemeral port and are skipped when the stream-lab checkout is absent.
+WebSocket. `swift test` runs 53 tests; the four integration ones start the server on an
+ephemeral port and are skipped when the stream-lab checkout is absent, and the twelve storage
+ones run on a memory database and on a file that is closed and reopened.
 
 The app target is built by a macOS runner, not here: CI compiles it for iOS and macOS, runs the
 tests on an iPhone simulator picked at runtime, and renders the two screens as PNG artefacts
@@ -79,11 +102,12 @@ tests on an iPhone simulator picked at runtime, and renders the two screens as P
 device: there is no Xcode and no Mac on this machine, so the app has only ever been compiled
 and rendered, never used.
 
-Not in scope: media, WebRTC, camera, authentication, persistence, more than two peers per room.
+Not in scope: media, WebRTC, camera, authentication, more than two peers per room.
 Only loopback has been exercised — `SignallingEndpoint(host:port:)` takes any host, but nothing
 has run against a LAN address or over TLS.
 
 ## Status
 
-The model and the transport are done and tested on Linux. The app compiles for iOS and macOS in
-CI and renders its two screens, and it has never run on a device or been driven by a human.
+The model, the transport and the event log are done and tested on Linux. The app compiles for
+iOS and macOS in CI and renders its two screens, and it has never run on a device or been driven
+by a human. The log is used by the command line client only; the app does not open a database.
